@@ -14,17 +14,22 @@ class PostItem extends PureComponent {
         index: -1,
         seen: false,
         comments: 5589,
+        active: false,
     };
 
     render() {
-        const {title, image, datetime, description, index, seen, comments} = this.props;
+        const {title, image, datetime, description, index, seen, comments, active} = this.props;
+        const activeStyles = active ? {backgroundColor: "#333333"} : null;
         return (
-            <View style={styles.container}>
-                <Text style={styles.title}>
-                {!seen ? 
-                    <View style={styles.seen}></View>
-                :null}
-                 {title} <Text style={[styles.body, {textAlign: 'right'}]}>{moment(datetime, "X").fromNow()}</Text></Text>
+            <View style={[styles.container, activeStyles]}>
+                <View style={[styles.close, {marginBottom: 10}]}>
+                    {!seen ? 
+                        <View style={styles.seen}></View>
+                    :null}
+                    <Text style={styles.title}>
+                    {title} <Text style={[styles.body, {textAlign: 'right'}]}>{moment(datetime, "X").fromNow()}</Text></Text>
+                </View>
+               
                 <View style={styles.center_container}>
                     <View>
                         <Image style={styles.image} source={{uri: image}}/>
@@ -83,7 +88,6 @@ const styles = StyleSheet.create({
 	title: {
 		color: "#fff",
 		fontSize: 18,
-		marginBottom: 8,
 	},
 	body: {
 		marginRight: 30,
@@ -123,6 +127,7 @@ const styles = StyleSheet.create({
         height: 15,
         backgroundColor: "#157efb",
         borderRadius: 8,
+        marginRight: 10,
     },
     text_accent:{
         color: "#f67c22",
