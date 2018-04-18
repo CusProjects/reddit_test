@@ -15,16 +15,14 @@ class Posts extends Component {
 
     _renderItem = ({item, index}) => {
         const {selectedPost} = this.props;
-
-        const {data} = item;
-        console.log(this.props.data);
-        return(
+        return item ? (
             <PostItem 
-                title={data.author}
-                datetime={data.created}
-                description={data.title}
-                image={data.thumbnail}
-                comments={data.num_comments}
+                index={index}
+                title={item.data.author}
+                datetime={item.data.created}
+                description={item.data.title}
+                image={item.data.thumbnail}
+                comments={item.data.num_comments}
                 active={selectedPost === index}
                 onPress={()=>{
                     if(!IS_TABLET){
@@ -37,8 +35,11 @@ class Posts extends Component {
                         this.props.selectPost(index);
                     }
                 }}
+                onClose={()=>{
+                    this.props.deletePost(index);
+                }}
             />
-        );
+        ) : null;
     }
 
     render() {

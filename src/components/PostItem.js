@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Animated } from 'react-native';
 import moment from 'moment';
 
-class PostItem extends PureComponent {
+class PostItem extends Component {
 
     static defaultProps = {
         title: 'This is the title',
@@ -17,11 +17,31 @@ class PostItem extends PureComponent {
         active: false,
     };
 
+    constructor(props){
+        super(props);
+        this.state = {
+            translateAnim: new Animated.Value(0)
+        };
+    }
+
+    closeItem = () => {
+        const {translateAnim} = this.state;
+        Animated.timing(translateAnim, {
+            toValue: -500,
+            duration: 250,
+        }).start(()=>{
+            this.props.onClose();
+        });
+    }
     render() {
         const {title, image, datetime, description, index, seen, comments, active} = this.props;
+        const {translateAnim} = this.state;
         const activeStyles = active ? {backgroundColor: "#333333"} : null;
+
+        const containerStyle = [styles.container, activeStyles, { transform: [{translateX: translateAnim}] }];
+
         return (
-            <View style={[styles.container, activeStyles]}>
+            <Animated.View style={containerStyle}>
                 <View style={[styles.close, {marginBottom: 10}]}>
                     {!seen ? 
                         <View style={styles.seen}></View>
@@ -47,7 +67,7 @@ class PostItem extends PureComponent {
                 </View>
 
                 <View style={[styles.close, {marginTop: 10}]}>
-                    <TouchableOpacity onPress={this.props.onClose.bind(this, index)}> 
+                    <TouchableOpacity onPress={this.closeItem}> 
                         <View style={styles.close}>
                             <View style={styles.circle}>
                                 <Text style={styles.circle_text}>X</Text>
@@ -57,7 +77,7 @@ class PostItem extends PureComponent {
                     </TouchableOpacity>
                     <Text style={styles.text_accent}>{`${comments} comments`}</Text>
                 </View>
-            </View>
+            </Animated.View>
             
         );
     }

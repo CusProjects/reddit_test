@@ -30,13 +30,30 @@ export default class App extends Component {
   selectPost = (index) => {
     this.setState({selectedPost: index });
   }
+  deletePost = (index) => {
+    let result = []
+    const {data} = this.state;
+    data.forEach((x, i) => {
+      if(index !== i){
+        result = [...result, x];
+      }else{
+        result = [...result, null];
+      }
+    });
+    this.setState({data:result}); 
+  }
+  addToVisited = (index) =>{
+    let {visited} = this.state;
+    visited = [...visited, index];
+    this.setState({visited});
+  }
 
   tablet =() =>{
     const {selectedPost, data} = this.state;
     return(
       <View style={styles.container}>
         <View style={styles.posts}>
-          <Posts data={data} selectedPost={selectedPost} selectPost={this.selectPost} navigation={this.props.navigation}/>
+          <Posts deletePost={this.deletePost} data={data} selectedPost={selectedPost} selectPost={this.selectPost} navigation={this.props.navigation}/>
         </View>
         <View style={styles.single}>
           <SinglePost post={data[selectedPost]} navigation={this.props.navigation} />
@@ -48,7 +65,7 @@ export default class App extends Component {
     const {data} = this.state;
     return(
       <View>
-        <Posts data={data} navigation={this.props.navigation}/>
+        <Posts deletePost={this.deletePost} data={data} navigation={this.props.navigation}/>
       </View>
     );
     
