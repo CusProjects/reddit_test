@@ -9,14 +9,17 @@ class Posts extends Component {
     static defaultProps = {
         selectedPost : -1,
         selectPost: ()=>{},
+        addToVisited: ()=> {},
         data: [],
+        visited: [],
     };
 
 
     _renderItem = ({item, index}) => {
-        const {selectedPost} = this.props;
+        const {selectedPost, visited} = this.props;
         return item ? (
-            <PostItem 
+            <PostItem
+                seen={visited.indexOf(index) >= 0}
                 index={index}
                 title={item.data.author}
                 datetime={item.data.created}
@@ -25,6 +28,7 @@ class Posts extends Component {
                 comments={item.data.num_comments}
                 active={selectedPost === index}
                 onPress={()=>{
+                    this.props.addToVisited(index);
                     if(!IS_TABLET){
                         this.props.navigation.navigate('Single',{
                             author: this.props.data[index].data.author,

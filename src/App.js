@@ -21,7 +21,7 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      selectedPost : 0,
+      selectedPost : -1,
       data: [],
       visited: [],
     }
@@ -49,11 +49,11 @@ export default class App extends Component {
   }
 
   tablet =() =>{
-    const {selectedPost, data} = this.state;
+    const {selectedPost, data, visited} = this.state;
     return(
       <View style={styles.container}>
         <View style={styles.posts}>
-          <Posts deletePost={this.deletePost} data={data} selectedPost={selectedPost} selectPost={this.selectPost} navigation={this.props.navigation}/>
+          <Posts visited={visited} addToVisited={this.addToVisited} deletePost={this.deletePost} data={data} selectedPost={selectedPost} selectPost={this.selectPost} navigation={this.props.navigation}/>
         </View>
         <View style={styles.single}>
           <SinglePost post={data[selectedPost]} navigation={this.props.navigation} />
@@ -62,10 +62,10 @@ export default class App extends Component {
     );
   }
   phone = () =>{
-    const {data} = this.state;
+    const {data, visited} = this.state;
     return(
       <View>
-        <Posts deletePost={this.deletePost} data={data} navigation={this.props.navigation}/>
+        <Posts  visited={visited} addToVisited={this.addToVisited} deletePost={this.deletePost} data={data} navigation={this.props.navigation}/>
       </View>
     );
     
