@@ -46,7 +46,7 @@ class PostItem extends PureComponent {
                     </View>
                 </View>
 
-                <View style={styles.close}>
+                <View style={[styles.close, {marginTop: 10}]}>
                     <TouchableOpacity onPress={this.props.onClose.bind(this, index)}> 
                         <View style={styles.close}>
                             <View style={styles.circle}>
@@ -57,8 +57,6 @@ class PostItem extends PureComponent {
                     </TouchableOpacity>
                     <Text style={styles.text_accent}>{`${comments} comments`}</Text>
                 </View>
-              
-                
             </View>
             
         );
