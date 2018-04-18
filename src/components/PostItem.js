@@ -41,43 +41,46 @@ class PostItem extends Component {
         const containerStyle = [styles.container, activeStyles, { transform: [{translateX: translateAnim}] }];
 
         return (
-            <Animated.View style={containerStyle}>
-                <View style={[styles.close, {marginBottom: 10}]}>
-                    {!seen ? 
-                        <View style={styles.seen}></View>
-                    :null}
-                    <Text style={styles.title}>
-                    {title} <Text style={[styles.body, {textAlign: 'right'}]}>{moment(datetime, "X").fromNow()}</Text></Text>
-                </View>
-               
-                <View style={styles.center_container}>
-                    <View>
-                        <Image style={styles.image} source={{uri: image}}/>
+            <TouchableOpacity onPress={this.props.onPress}>
+                <Animated.View style={containerStyle}>
+                    <View style={[styles.close, {marginBottom: 10}]}>
+                        {!seen ? 
+                            <View style={styles.seen}></View>
+                        :null}
+                        <Text style={styles.title}>
+                        {title} <Text style={[styles.body, {textAlign: 'right'}]}>{moment(datetime, "X").fromNow()}</Text></Text>
                     </View>
-
-                    <View style={styles.text_container}>
-                        <Text style={styles.body}>{`${description}` }</Text>
-                    </View>
-
-                    <View>
-                        <TouchableOpacity onPress={this.props.onPress.bind(this, index)}>
-                            <Text style={styles.icon}>></Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-                <View style={[styles.close, {marginTop: 10}]}>
-                    <TouchableOpacity onPress={this.closeItem}> 
-                        <View style={styles.close}>
-                            <View style={styles.circle}>
-                                <Text style={styles.circle_text}>X</Text>
-                            </View>
-                            <Text style={[styles.body, {marginLeft: 10,}]}>{`Dismiss Post`}</Text>
+                
+                    <View style={styles.center_container}>
+                        <View>
+                            <Image style={styles.image} source={{uri: image}}/>
                         </View>
-                    </TouchableOpacity>
-                    <Text style={styles.text_accent}>{`${comments} comments`}</Text>
-                </View>
-            </Animated.View>
+
+                        <View style={styles.text_container}>
+                            <Text style={styles.body}>{`${description}` }</Text>
+                        </View>
+
+                        <View>
+                            <TouchableOpacity onPress={this.props.onPress.bind(this, index)}>
+                                <Text style={styles.icon}>></Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    <View style={[styles.close, {marginTop: 10}]}>
+                        <TouchableOpacity onPress={this.closeItem}> 
+                            <View style={styles.close}>
+                                <View style={styles.circle}>
+                                    <Text style={styles.circle_text}>X</Text>
+                                </View>
+                                <Text style={[styles.body, {marginLeft: 10,}]}>{`Dismiss Post`}</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <Text style={styles.text_accent}>{`${comments} comments`}</Text>
+                    </View>
+                </Animated.View>
+            </TouchableOpacity>
+            
             
         );
     }

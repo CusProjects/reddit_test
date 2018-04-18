@@ -14,6 +14,16 @@ class Posts extends Component {
         data: [],
         visited: [],
     };
+    
+    constructor(props){
+        super(props);
+        this.getData = this.getData.bind(this);
+        this.onRefresh = this.onRefresh.bind(this);
+        this.state = {
+            data: this.props.data,
+            isFetching: false,
+        }
+    }
 
 
     _renderItem = ({item, index}) => {
@@ -47,12 +57,35 @@ class Posts extends Component {
         ) : null;
     }
 
+    getData() {
+        fetch('https://www.reddit.com/r/articles/top/.json?count=50')
+          .then((response) => response.json())
+          .then((responseJson) => {
+           //data here
+            this.setState({data: responseJson.data.children, isFetching: false});
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      onRefresh() {
+        this.setState({ isFetching: true }, () => {
+          this.getData();
+        });
+      }
+
+      UNSAFE_componentWillReceiveProps(nextProps){
+          this.setState({data: nextProps.data});
+      }
    
     render() {
-        const {data} = this.props;
+        const {data} = this.state;
         return (
             <View>
                 <FlatList
+                    refreshing={this.state.isFetching}
+                    onRefresh={this.onRefresh}
                     contentContainerStyle={styles.list_container}
                     data={data}
                     renderItem={this._renderItem}

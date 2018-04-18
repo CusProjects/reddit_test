@@ -21,6 +21,7 @@ export default class App extends Component {
   constructor(props){
     super(props);
     this.addToVisited = this.addToVisited.bind(this);
+    this.deleteAllPost = this.deleteAllPost.bind(this);
     this.state = {
       selectedPost : -1,
       data: [],
@@ -43,8 +44,13 @@ export default class App extends Component {
     });
     this.setState({data:result}); 
   }
-  deleteAllPost = (index) => {
+  async deleteAllPost(index) {
     this.setState({data: []});
+      try {
+        await AsyncStorage.setItem('visited', JSON.stringify([]));
+      } catch (error) {
+        // Error saving data
+      }
   }
 
   async addToVisited(index){
