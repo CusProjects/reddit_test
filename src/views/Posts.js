@@ -47,6 +47,7 @@ class Posts extends Component {
         ) : null;
     }
 
+   
     render() {
         const {data} = this.props;
         return (

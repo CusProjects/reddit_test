@@ -5,7 +5,8 @@ import {
   Text,
   View,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage,
 } from 'react-native';
 
 import Posts from './views/Posts';
@@ -19,7 +20,7 @@ export default class App extends Component {
 
   constructor(props){
     super(props);
-
+    this.addToVisited = this.addToVisited.bind(this);
     this.state = {
       selectedPost : -1,
       data: [],
@@ -46,10 +47,17 @@ export default class App extends Component {
     this.setState({data: []});
   }
 
-  addToVisited = (index) =>{
+  async addToVisited(index){
     let {visited} = this.state;
     visited = [...visited, index];
     this.setState({visited});
+    try {
+      await AsyncStorage.setItem('visited', JSON.stringify(visited));
+    } catch (error) {
+      // Error saving data
+    }
+    
+    
   }
 
   tablet =() =>{
@@ -82,6 +90,18 @@ export default class App extends Component {
     }catch(error){
       console.log(error);
     }
+
+    try {
+      const value = await AsyncStorage.getItem('visited');
+      if (value !== null){
+          this.setState({visited: JSON.parse(value)});
+      }else{
+          this.setState({visited: []});
+      }
+    } catch (error) {
+        this.setState({visited: []});
+    }
+
   }
 
   render() {
