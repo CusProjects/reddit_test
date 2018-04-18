@@ -42,6 +42,10 @@ export default class App extends Component {
     });
     this.setState({data:result}); 
   }
+  deleteAllPost = (index) => {
+    this.setState({data: []});
+  }
+
   addToVisited = (index) =>{
     let {visited} = this.state;
     visited = [...visited, index];
@@ -53,7 +57,7 @@ export default class App extends Component {
     return(
       <View style={styles.container}>
         <View style={styles.posts}>
-          <Posts visited={visited} addToVisited={this.addToVisited} deletePost={this.deletePost} data={data} selectedPost={selectedPost} selectPost={this.selectPost} navigation={this.props.navigation}/>
+          <Posts deleteAllPost={this.deleteAllPost} visited={visited} addToVisited={this.addToVisited} deletePost={this.deletePost} data={data} selectedPost={selectedPost} selectPost={this.selectPost} navigation={this.props.navigation}/>
         </View>
         <View style={styles.single}>
           <SinglePost post={data[selectedPost]} navigation={this.props.navigation} />
@@ -65,7 +69,7 @@ export default class App extends Component {
     const {data, visited} = this.state;
     return(
       <View>
-        <Posts  visited={visited} addToVisited={this.addToVisited} deletePost={this.deletePost} data={data} navigation={this.props.navigation}/>
+        <Posts deleteAllPost={this.deleteAllPost} visited={visited} addToVisited={this.addToVisited} deletePost={this.deletePost} data={data} navigation={this.props.navigation}/>
       </View>
     );
     
@@ -86,7 +90,7 @@ export default class App extends Component {
 
 
   getData() {
-    return fetch('https://www.reddit.com/r/articles/top/.json?count=20')
+    return fetch('https://www.reddit.com/r/articles/top/.json?count=50')
       .then((response) => response.json())
       .then((responseJson) => {
         return responseJson;

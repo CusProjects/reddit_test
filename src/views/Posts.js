@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,  FlatList, StyleSheet, Dimensions} from 'react-native';
+import { View, Text,  FlatList, StyleSheet, Dimensions, TouchableHighlight} from 'react-native';
 
 import PostItem from '../components/PostItem';
 const IS_TABLET = Dimensions.get('window').width > 767;
@@ -10,6 +10,7 @@ class Posts extends Component {
         selectedPost : -1,
         selectPost: ()=>{},
         addToVisited: ()=> {},
+        deleteAllPost: () => {},
         data: [],
         visited: [],
     };
@@ -49,13 +50,19 @@ class Posts extends Component {
     render() {
         const {data} = this.props;
         return (
-            <FlatList
-                contentContainerStyle={styles.list_container}
-                data={data}
-                renderItem={this._renderItem}
-                keyExtractor={(item, index)=>`post_item_${index}`}
-                ItemSeparatorComponent={()=><View style={styles.separator}/>}
-            />
+            <View>
+                <FlatList
+                    contentContainerStyle={styles.list_container}
+                    data={data}
+                    renderItem={this._renderItem}
+                    keyExtractor={(item, index)=>`post_item_${index}`}
+                    ItemSeparatorComponent={()=><View style={styles.separator}/>}
+                />
+                <TouchableHighlight underlayColor={"gray"}  onPress={this.props.deleteAllPost} style={styles.button_container}>
+                    <Text style={{color: "#fff", fontSize: 24, textAlign: 'center'}}>Dismiss All</Text>
+                </TouchableHighlight >
+            </View>
+            
         );
     }
 }
@@ -70,7 +77,14 @@ const styles = StyleSheet.create({
 
     },
     list_container:{
-       
+       paddingBottom: 30,
+    },
+    button_container:{
+        position: 'absolute',
+        bottom: 0,
+        right:0,
+        left:0,
+        backgroundColor: "#000",
     }
 });
 
